@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       pollFromQueue();
-    }, 5000);
+    }, 500);
 
     return () => clearInterval(intervalId);
   }, [queue]);
@@ -60,6 +60,7 @@ function App() {
   const ComponentsResetHandler = () => {
     setQueue([])
     setPolledElement([])
+    setDummyqueue([])
     setName('')
   }
   return (
@@ -75,7 +76,7 @@ function App() {
           <InputComponent name={name} setName={setName} addToQueue={addToQueue} />
           <ViewComponent queue={queue} />
         </GridItem>
-        <GridItem>
+        <GridItem w="100%">
           <FinalViewComponent 
            polledElement={polledElement} 
            ComponentsResetHandler={ComponentsResetHandler} 

@@ -1,7 +1,6 @@
 import React from 'react'
 import { DataType } from '../types';
-import { Button } from '@chakra-ui/react';
-import Swal from 'sweetalert2';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 
 interface Props{
   polledElement : DataType[]
@@ -9,28 +8,53 @@ interface Props{
   EndHandler: () => void,
 };
 
+const scrollBarStyle = {
+  "::-webkit-scrollbar": {
+    height: "4px",
+    width: "8px",
+    // background: "rgba(0, 0, 0, 0.08)",
+  },
+  "::-webkit-scrollbar-track": {
+    height: "6px",
+    width: "6px",
+  },
+  "::-webkit-scrollbar-thumb": {
+    background: "gray",
+    borderRadius: "24px",
+  },
+};
+
 const FinalViewComponent:React.FC<Props> = ({ polledElement,ComponentsResetHandler,EndHandler  }) => {
-  
-  const newreset = () => {
-    if(polledElement.length === 0){
-      Swal.fire({
-        icon: "info",
-        title: "process not started "
-      })
-    }else{
-      ComponentsResetHandler()
-    }
-  }
-   
   return (
-    <div>
+    <Flex 
+     border="2px solid black" 
+     h={{base:'400px',lg:"100%"}} mb={2} 
+     flexDir="column" 
+     justifyContent="space-between" 
+     alignItems="center" 
+     overflowY="scroll" 
+     css={scrollBarStyle}
+    >
+      <Flex flexDir="column" gap="20px">
+        <Text color="gray.500">Polled elements</Text>
+        <Flex flexDir="column" w="200px">
         {
-          polledElement?.map(i => <li key={i.id}>{i.name}</li>)
+          polledElement?.slice().reverse().map(i => <Flex key={i.id}>
+            <Text fontFamily="cursive" fontSize="24px"> {`${i.id})`} {i.name}</Text>
+          </Flex>)
         }
-        
-        <Button onClick={() => EndHandler()}>End</Button>
-        <Button onClick={() => newreset()}>Reset</Button>
-    </div>
+        </Flex>
+      </Flex>
+      <Box
+       display="flex"
+       justifyContent="center"
+       mb="2rem"
+       gap="20px"
+      >
+        <Button bg="red" color="white" onClick={() => EndHandler()}>End</Button>
+        <Button bg="gray" color="white" onClick={() => ComponentsResetHandler()}>Reset</Button>
+      </Box>
+    </Flex>
   )
 }
 
